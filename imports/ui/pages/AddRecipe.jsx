@@ -43,31 +43,49 @@ class Ingredients extends Component {
   }
   renderLine() {
     return (
+      <div className="ingredients row">
+        <div className="form-group col-xs-3 padding-left">
+            <input
+              type="text"
+              className="form-control"
+              />
+        </div>
+        <div className="form-group col-xs-3">
+            <input
+              type="text"
+              className="form-control"
+              />
+        </div>
+        <div className="form-group col-xs-6 padding-right">
+            <input
+              type="text"
+              className="form-control"
+              />
+        </div>
+      </div>
+    )
+
+  }
+  renderHeading() {
+    return (
       <div>
 
-        <div className="form-group">
-          <label className="control-label">
-            <input
-              type="text"
-              className="form-control"
-              />
-          </label>
-        </div>
-        <div className="form-group">
-          <label className="control-label">
-            <input
-              type="text"
-              className="form-control"
-              />
-          </label>
-        </div>
-        <div className="form-group">
-          <label className="control-label">
-            <input
-              type="text"
-              className="form-control"
-              />
-          </label>
+        <div className="ingredients row">
+          <div className="form-group col-xs-3 padding-left">
+            <span>
+              Menge
+            </span>
+          </div>
+          <div className="form-group col-xs-3">
+            <span>
+              Einheit
+            </span>
+          </div>
+          <div className="form-group col-xs-6 padding-right">
+            <span>
+              Zutat
+            </span>
+          </div>
         </div>
       </div>
     )
@@ -79,7 +97,7 @@ class Ingredients extends Component {
       list[i] = i;
     }
     return list.map((index) => (
-      <div className="form-inline" key={index.toString()}>
+      <div key={index.toString()}>
         { this.renderLine()}
       </div>
     ))
@@ -88,7 +106,8 @@ class Ingredients extends Component {
     return (
       <div>
         <label>Zutaten: </label>
-        { this.renderIngredients()}
+          {this.renderHeading()}
+          { this.renderIngredients()}
         <button className="btn" onClick={this.addButton.bind(this)}>+</button>
       </div>
     )

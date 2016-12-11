@@ -1,7 +1,32 @@
 /* CSS declarations go here */
+.ingredients .form-control {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+}
+.ingredients .form-group {
+  /*width: 33%;*/
+  display: inline-block;
+  margin-bottom: 0;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+.padding-left{
+  padding-left: 15px !important;
+
+}
+.padding-right {
+  padding-right: 15px !important;
+}
+
+.ingredients span {
+  padding: 0;
+}
+
+
 @media (min-width: 768px) {
   .container {
-    width: 750px;
+    width: 100%;
   }
 }
 
@@ -15,4 +40,8 @@
   .container {
     width: 800px;
   }
+}
+
+footer {
+  height: 20px;
 }
