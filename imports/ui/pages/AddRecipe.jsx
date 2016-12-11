@@ -114,12 +114,79 @@ class Ingredients extends Component {
   }
 }
 
+class PhotoRecipe extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render()  {
+    return (
+      <div>
+        <div className="form-group">
+          <label htmlFor="picture">Foto:</label>
+          <input
+            type="file"
+            accept="image/*"
+            name="photo-recipe"
+            ref="photo-recipe" />
+        </div>
+      </div>
+    )
+  }
+}
+
+class TextRecipe extends Component {
+  render() {
+    return (
+      <div>
+        <Ingredients />
+        <div className="form-group">
+          <label htmlFor="preparation">Zubereitung:</label>
+          <textarea
+            className="form-control"
+            placeholder="Zubereitung"
+            name="preparation"
+            ref="preparation" />
+        </div>
+      </div>
+    )
+  }
+}
+
 export default class AddRecipe extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPhotoRecipe: false,
+    };
+  }
   backHandler (event) {
     event.preventDefault();
     browserHistory.push('/')
   }
-  render() {
+  handleTextRecipeClick (event) {
+    this.setState({
+      isPhotoRecipe: false,
+    });
+  }
+  handlePhotoRecipeClick (event) {
+    this.setState({
+      isPhotoRecipe: true,
+    })
+  }
+
+  render ()  {
+    let center = null;
+    let text_nav_class = "";
+    let photo_nav_class = "";
+    if (this.state.isPhotoRecipe) {
+      center = <PhotoRecipe />
+      photo_nav_class = "active";
+    }
+    else {
+      center = <TextRecipe />
+      text_nav_class = "active";
+    }
+
     return (
       <div className="container">
         <h1>Rezept hinzufügen</h1>
@@ -138,26 +205,31 @@ export default class AddRecipe extends Component {
             </div>
           </div>
           <Category />
-          <Ingredients />
-          <div className="form-group">
-            <label htmlFor="preparation">Zubereitung:</label>
-            <textarea
-              className="form-control"
-              placeholder="Zubereitung"
-              name="preparation"
-              ref="preparation" />
-          </div>
-          <div className="form-group pull-left">
-            <label htmlFor="picture">Titelbild:</label>
-            <input
-              type="file"
-              accept="image/*"
-              name="picture"
-              ref="picture" />
-          </div>
-          <div className="checkbox pull-right">
-            <label>
-              <input type="checkbox" /> Privat
+
+          <ul className="nav nav-tabs">
+            <li role="presentation" className={text_nav_class}>
+               <a href="#"
+                  onClick={this.handleTextRecipeClick.bind(this)}>
+                  Zubereitung
+                </a></li>
+              <li role="presentation" className={ photo_nav_class }>
+              <a href="#"
+                onClick={this.handlePhotoRecipeClick.bind(this)} >
+                Rezept fotografieren
+              </a></li>
+          </ul>
+        { center }
+        <div className="form-group pull-left">
+          <label htmlFor="picture">Titelbild:</label>
+          <input
+            type="file"
+            accept="image/*"
+            name="picture"
+            ref="picture" />
+        </div>
+        <div className="checkbox pull-right">
+          <label>
+            <input type="checkbox" /> Privat
             </label>
           </div>
           <div className="clearfix" />
@@ -167,8 +239,9 @@ export default class AddRecipe extends Component {
           <button className="btn btn-success pull-right">Speichern</button>
 
         </form>
-      </div>
 
+      </div>
     )
+
   }
 }
