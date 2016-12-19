@@ -3,6 +3,8 @@ import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 
+import { Images } from './images.js';
+
 export const Recipes = new Mongo.Collection('recipes');
 
 
@@ -46,7 +48,10 @@ Recipes.schema = new SimpleSchema({
   },
   isPhotoRecipe: {
     type: Boolean,
-  }
+  },
+  titleImage: {
+    type: Images,
+  },
 
 });
 

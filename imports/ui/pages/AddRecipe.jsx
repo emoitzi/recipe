@@ -6,6 +6,7 @@ import { ValidationError } from 'meteor/mdg:validation-error';
 
 import { Ingredients } from '../components/Ingredients';
 import { Recipes } from '../../api/recipes.js';
+import { Images } from '../../api/images.js';
 
 class Category extends Component {
   getCategories () {
@@ -73,7 +74,7 @@ class TextRecipe extends Component {
         <Ingredients value={this.props.value}
           onChange={this.ingredientsChange.bind(this)}/>
         <div className={ "form-group "  + this.props.errorClass }>
-          <label htmlFor="preparation">Zubereitung:</label>
+          <label className="control-label" htmlFor="preparation">Zubereitung:</label>
           <textarea
             className="form-control"
             id="preparation"
@@ -144,6 +145,36 @@ export default class AddRecipe extends Component {
     });
   }
 
+  handleTitleImage(event) {
+    event.preventDefault();
+    let target = event.currentTarget;
+
+    let self = this;
+
+    if ( target && target.files[0]) {
+      let file = target.files[0];
+      let uploadInstance = Images.insert({
+        file: file,
+        streams: 'dynamic',
+        chunkSize: 'dynamic',
+        allowWebWorkers: true,
+        transport: 'http',
+      }, false);
+
+      uploadInstance.on('uploaded', (error, fileObj) => {
+        if (error) {
+          console.log(error);
+        }
+        else {
+          console.log('uploaded: ', fileObj);
+          self.setState({titleImage: fileObj._id});
+          self.refs.titleImage.file = '';
+        }
+      });
+      uploadInstance.start();
+    }
+  }
+
   hasError(name) {
     return 'errors' in this.state && name in this.state.errors;
   }
@@ -205,14 +236,18 @@ export default class AddRecipe extends Component {
               </a></li>
           </ul>
         { center }
-        <div className="form-group pull-left">
-          <label htmlFor="picture">Titelbild:</label>
+        <div className={ "form-group pull-left " + (this.hasError('titleImage') ? 'has-error' :'') }>
+          <label className="control-label" htmlFor="titleImage">Titelbild:</label>
           <input
             type="file"
             accept="image/*"
-            name="picture"
-            ref="picture" />
+            name="titleImage"
+            ref="titleImage"
+            id="titleImage"
+            onChange={ this.handleTitleImage.bind(this)}
+            />
         </div>
+        <img ref="title_image_img"/>
         <div className="checkbox pull-right">
           <label>
             <input type="checkbox"
