@@ -1,6 +1,8 @@
 import React, {Component } from 'react';
 import {browserHistory} from 'react-router';
 
+import { Ingredients } from '../components/Ingredients';
+
 class Category extends Component {
   getCategories () {
     return [
@@ -27,92 +29,6 @@ class Category extends Component {
 
 }
 
-class Ingredients extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: 1
-    }
-  }
-  addButton(e) {
-    e.preventDefault();
-    let count = this.state.count + 1;
-    this.setState({
-      count: count
-    });
-  }
-  renderLine() {
-    return (
-      <div className="ingredients row">
-        <div className="form-group col-xs-3 padding-left">
-            <input
-              type="text"
-              className="form-control"
-              />
-        </div>
-        <div className="form-group col-xs-3">
-            <input
-              type="text"
-              className="form-control"
-              />
-        </div>
-        <div className="form-group col-xs-6 padding-right">
-            <input
-              type="text"
-              className="form-control"
-              />
-        </div>
-      </div>
-    )
-
-  }
-  renderHeading() {
-    return (
-      <div>
-
-        <div className="ingredients row">
-          <div className="form-group col-xs-3 padding-left">
-            <span>
-              Menge
-            </span>
-          </div>
-          <div className="form-group col-xs-3">
-            <span>
-              Einheit
-            </span>
-          </div>
-          <div className="form-group col-xs-6 padding-right">
-            <span>
-              Zutat
-            </span>
-          </div>
-        </div>
-      </div>
-    )
-
-  }
-  renderIngredients () {
-    const list = new Array(this.state.count);
-    for (let i=0; i < this.state.count; ++i) {
-      list[i] = i;
-    }
-    return list.map((index) => (
-      <div key={index.toString()}>
-        { this.renderLine()}
-      </div>
-    ))
-  }
-  render () {
-    return (
-      <div>
-        <label>Zutaten: </label>
-          {this.renderHeading()}
-          { this.renderIngredients()}
-        <button className="btn" onClick={this.addButton.bind(this)}>+</button>
-      </div>
-    )
-  }
-}
 
 class PhotoRecipe extends Component {
   constructor(props) {
@@ -135,17 +51,31 @@ class PhotoRecipe extends Component {
 }
 
 class TextRecipe extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  ingredientsChange(value) {
+    this.props.onChange({ingredients: value});
+  }
+  handleChange(event) {
+    this.props.onChange({preparation: event.target.value});
+  }
+
   render() {
     return (
       <div>
-        <Ingredients />
+        <Ingredients value={this.props.value}
+          onChange={this.ingredientsChange.bind(this)}/>
         <div className="form-group">
           <label htmlFor="preparation">Zubereitung:</label>
           <textarea
             className="form-control"
             placeholder="Zubereitung"
             name="preparation"
-            ref="preparation" />
+            ref="preparation"
+            onChange={ this.handleChange.bind(this)}
+            />
         </div>
       </div>
     )
@@ -157,6 +87,7 @@ export default class AddRecipe extends Component {
     super(props);
     this.state = {
       isPhotoRecipe: false,
+      ingredients: [{}],
     };
   }
   backHandler (event) {
@@ -173,6 +104,21 @@ export default class AddRecipe extends Component {
       isPhotoRecipe: true,
     })
   }
+  ingredientsChange(value) {
+    this.setState(value);
+  }
+
+  handleChange (event) {
+    let target = $(event.target);
+    let name = target.attr('name');
+    let new_state = {};
+    new_state[name] = target.val();
+    this.setState(new_state);
+  }
+  handleStatusChange (event) {
+    let value = event.target.checked;
+    this.setState({private: value});
+  }
 
   render ()  {
     let center = null;
@@ -183,7 +129,10 @@ export default class AddRecipe extends Component {
       photo_nav_class = "active";
     }
     else {
-      center = <TextRecipe />
+      center = <TextRecipe
+        onChange={ this.ingredientsChange.bind(this)}
+        value={ this.state.ingredients}
+        />
       text_nav_class = "active";
     }
 
@@ -199,11 +148,16 @@ export default class AddRecipe extends Component {
                   type="text"
                   className="form-control"
                   placeholder="Titel"
-                  name="recipe-title"
-                  ref="title" />
+                  name="title"
+                  ref="title"
+                  onChange={this.handleChange.bind(this)}
+                  />
               </div>
             </div>
           </div>
+          <pre>
+            { JSON.stringify(this.state, null, 2)}
+          </pre>
           <Category />
 
           <ul className="nav nav-tabs">
@@ -229,7 +183,8 @@ export default class AddRecipe extends Component {
         </div>
         <div className="checkbox pull-right">
           <label>
-            <input type="checkbox" /> Privat
+            <input type="checkbox"
+              onChange={this.handleStatusChange.bind(this)} /> Privat
             </label>
           </div>
           <div className="clearfix" />
