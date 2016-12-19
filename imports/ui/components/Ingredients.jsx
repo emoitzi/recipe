@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 
-export class Ingredients extends Component {
+export default class Ingredients extends Component {
   constructor(props) {
     props.value = props.value || {};
     super(props);

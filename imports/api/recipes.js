@@ -3,8 +3,6 @@ import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 
-import { Images } from './images.js';
-
 export const Recipes = new Mongo.Collection('recipes');
 
 
@@ -50,8 +48,12 @@ Recipes.schema = new SimpleSchema({
     type: Boolean,
   },
   titleImage: {
-    type: Images,
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
   },
+  category: {
+    type: String,
+  }
 
 });
 
@@ -59,6 +61,7 @@ Recipes.schema = new SimpleSchema({
 Meteor.methods({
   'recipes.insert' (fields) {
     Recipes.schema.clean(fields);
+    console.log('fields: ', fields);
     if (fields.ingredients) {
       let remove_index = []
       for (let i=0; i< fields.ingredients.length; ++i) {

@@ -4,35 +4,11 @@ import {browserHistory} from 'react-router';
 import { ValidationError } from 'meteor/mdg:validation-error';
 
 
-import { Ingredients } from '../components/Ingredients';
+import  Ingredients  from '../components/Ingredients';
+import  CategoryContainer from '../components/Category';
+
 import { Recipes } from '../../api/recipes.js';
 import { Images } from '../../api/images.js';
-
-class Category extends Component {
-  getCategories () {
-    return [
-      'Suppe', 'Fleisch', 'Nudeln', 'Mehlspeisen'
-    ]
-  }
-  renderCategories() {
-    return this.getCategories().map((category) => (
-      <button type="button" className="btn btn-default" key={category}>
-         {category}
-       </button>
-    ))
-  }
-  render() {
-    return (
-      <div className="form-horizontal">
-        <label className="col-sm-2 control-label"> Kategorie </label>
-        <div className="col-sm-10 form-group btn-group" role="group">
-          { this.renderCategories()}
-        </div>
-      </div>
-    )
-  }
-
-}
 
 
 class PhotoRecipe extends Component {
@@ -125,6 +101,9 @@ export default class AddRecipe extends Component {
   handleStatusChange (event) {
     let value = event.target.checked;
     this.setState({private: value});
+  }
+  handleCategoryChange (value) {
+    this.setState({category: value});
   }
 
   handleSubmit (event) {
@@ -219,12 +198,16 @@ export default class AddRecipe extends Component {
             </div>
           </div>
           {
-            Meteor.isDevelopment && 
+            Meteor.isDevelopment &&
               <pre>
                 { JSON.stringify(this.state, null, 2)}
               </pre>
           }
-          <Category />
+          <CategoryContainer
+            inputName="category"
+            onChange={this.handleCategoryChange.bind(this)}
+            errorClass={ this.hasError('category') ? 'has-error': ''}
+            />
 
           <ul className="nav nav-tabs">
             <li role="presentation" className={text_nav_class}>

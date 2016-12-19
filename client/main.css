@@ -45,3 +45,7 @@
 footer {
   height: 20px;
 }
+
+.btn-group:focus {
+   outline: none;
+}
