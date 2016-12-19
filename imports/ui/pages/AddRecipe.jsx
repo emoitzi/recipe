@@ -1,7 +1,11 @@
+import { Meteor } from 'meteor/meteor'
 import React, {Component } from 'react';
 import {browserHistory} from 'react-router';
+import { ValidationError } from 'meteor/mdg:validation-error';
+
 
 import { Ingredients } from '../components/Ingredients';
+import { Recipes } from '../../api/recipes.js';
 
 class Category extends Component {
   getCategories () {
@@ -53,6 +57,7 @@ class PhotoRecipe extends Component {
 class TextRecipe extends Component {
   constructor(props) {
     super(props)
+    this.props.errorClass = props.errorClass || '';
   }
 
   ingredientsChange(value) {
@@ -67,10 +72,11 @@ class TextRecipe extends Component {
       <div>
         <Ingredients value={this.props.value}
           onChange={this.ingredientsChange.bind(this)}/>
-        <div className="form-group">
+        <div className={ "form-group "  + this.props.errorClass }>
           <label htmlFor="preparation">Zubereitung:</label>
           <textarea
             className="form-control"
+            id="preparation"
             placeholder="Zubereitung"
             name="preparation"
             ref="preparation"
@@ -120,6 +126,24 @@ export default class AddRecipe extends Component {
     this.setState({private: value});
   }
 
+  handleSubmit (event) {
+    event.preventDefault();
+    this.setState({errors: {}})
+    Meteor.call('recipes.insert', this.state, (err) => {
+      if (err) {
+        err.details.forEach((fieldError) => {
+          let error_state = this.state.errors;
+          error_state[fieldError.name] = true;
+          this.setState({errors: error_state});
+        });
+      }
+    });
+  }
+
+  hasError(name) {
+    return 'errors' in this.state && name in this.state.errors;
+  }
+
   render ()  {
     let center = null;
     let text_nav_class = "";
@@ -132,17 +156,20 @@ export default class AddRecipe extends Component {
       center = <TextRecipe
         onChange={ this.ingredientsChange.bind(this)}
         value={ this.state.ingredients}
+        errorClass={ this.hasError('preparation') ? 'has-error': ''}
         />
       text_nav_class = "active";
     }
 
+
     return (
       <div className="container">
         <h1>Rezept hinzufügen</h1>
-        <form className="new-recipe">
+        <form className="new-recipe"
+          onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-horizontal">
-            <div className="form-group">
-              <label className="col-sm-2 control-label" htmlFor="recipe-title">Titel: </label>
+            <div className={ "form-group " + (this.hasError('title') ? 'has-error' :'') }>
+              <label className="col-sm-2 control-label" htmlFor="title">Titel: </label>
               <div className=" col-sm-10">
                 <input
                   type="text"
@@ -150,6 +177,7 @@ export default class AddRecipe extends Component {
                   placeholder="Titel"
                   name="title"
                   ref="title"
+                  id="title"
                   onChange={this.handleChange.bind(this)}
                   />
               </div>
