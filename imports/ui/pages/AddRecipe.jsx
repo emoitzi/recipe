@@ -137,6 +137,10 @@ export default class AddRecipe extends Component {
           this.setState({errors: error_state});
         });
       }
+      else {
+        //success
+        window.location.reload(false);
+      }
     });
   }
 
