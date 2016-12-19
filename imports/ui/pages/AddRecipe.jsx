@@ -218,9 +218,12 @@ export default class AddRecipe extends Component {
               </div>
             </div>
           </div>
-          <pre>
-            { JSON.stringify(this.state, null, 2)}
-          </pre>
+          {
+            Meteor.isDevelopment && 
+              <pre>
+                { JSON.stringify(this.state, null, 2)}
+              </pre>
+          }
           <Category />
 
           <ul className="nav nav-tabs">
