@@ -18,4 +18,13 @@ if (Meteor.isServer){
       return this.ready();
     }
   });
+  Meteor.publish("images", function(){
+    const images = Images.find({});
+    if (images) {
+      return images.cursor;
+    }
+    else {
+      return this.ready();
+    }
+  });
 };

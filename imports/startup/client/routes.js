@@ -2,7 +2,7 @@ import React from 'react';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 
 import App from '../../ui/App.jsx';
-import Recipe from '../../ui/pages/recipe.jsx';
+import Recipe from '../../ui/pages/Recipe.jsx';
 import AddRecipe from '../../ui/pages/AddRecipe.jsx';
 import NotFound from '../../ui/pages/NotFound.jsx';
 import Home from  '../../ui/pages/Home.jsx';
