@@ -53,8 +53,18 @@ Recipes.schema = new SimpleSchema({
   },
   category: {
     type: String,
+  },
+  recipeImage: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+    custom: function() {
+      let shouldBeRequired = this.field('isPhotoRecipe').value == true;
+      if (shouldBeRequired && (!this.isSet || this.value === null || this.value === "")) {
+        return "required";
+      }
+    }
   }
-
 });
 
 

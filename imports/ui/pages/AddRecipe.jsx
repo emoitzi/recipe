@@ -15,16 +15,21 @@ class PhotoRecipe extends Component {
   constructor(props) {
     super(props);
   }
+  handleImageChange (event) {
+    this.props.onImageChange(event);
+  }
   render()  {
     return (
       <div>
         <div className="form-group">
-          <label htmlFor="picture">Foto:</label>
+          <label htmlFor="recipeImage">Foto:</label>
           <input
             type="file"
             accept="image/*"
-            name="photo-recipe"
-            ref="photo-recipe" />
+            name="recipeImage"
+            id="recipeImage"
+            onChange={ this.handleImageChange.bind(this)}
+            ref="recipeImage" />
         </div>
       </div>
     )
@@ -123,8 +128,9 @@ export default class AddRecipe extends Component {
       }
     });
   }
-
-  handleTitleImage(event) {
+  handleImageChange(event, onStart, onUploaded) {
+    let saveButton = $(this.refs.saveButton);
+    saveButton.button('loading');
     event.preventDefault();
     let target = event.currentTarget;
 
@@ -140,18 +146,67 @@ export default class AddRecipe extends Component {
         transport: 'http',
       }, false);
 
-      uploadInstance.on('uploaded', (error, fileObj) => {
-        if (error) {
-          console.log(error);
-        }
-        else {
-          console.log('uploaded: ', fileObj);
-          self.setState({titleImage: fileObj._id});
-          self.refs.titleImage.file = '';
-        }
-      });
+      uploadInstance.on('start', onStart);
+      uploadInstance.on('uploaded', onUploaded);
+
       uploadInstance.start();
     }
+  }
+
+  handleTitleImage(event) {
+    const self = this;
+    function onStart() {
+      self.setState({uploadingTitleImage: true});
+    }
+
+    function onUploaded(error, fileObj) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        self.setState({
+          titleImage: fileObj._id,
+        });
+        self.refs.titleImage.file = '';
+      }
+      self.setState({
+        uploadingTitleImage: false
+      })
+      if (! (self.state.uploadingRecipeImage && self.state.uploadingTitleImage)) {
+        let saveButton = $(self.refs.saveButton);
+        saveButton.button('reset');
+      }
+    }
+
+    this.handleImageChange(event, onStart, onUploaded);
+  }
+
+  handleRecipeImage(event) {
+    const self = this;
+
+    function onStart() {
+      self.setState({uploadingRecipeImage: true});
+    }
+
+    function onUploaded(error, fileObj) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        self.setState({
+          recipeImage: fileObj._id,
+        });
+      }
+      self.setState({
+        uploadingRecipeImage: false
+      })
+      if (! self.state.uploadingRecipeImage && self.state.uploadingTitleImage) {
+        let saveButton = $(self.refs.saveButton);
+        saveButton.button('reset');
+      }
+
+    }
+    this.handleImageChange(event, onStart, onUploaded);
   }
 
   hasError(name) {
@@ -163,7 +218,8 @@ export default class AddRecipe extends Component {
     let text_nav_class = "";
     let photo_nav_class = "";
     if (this.state.isPhotoRecipe) {
-      center = <PhotoRecipe />
+      center = <PhotoRecipe
+      onImageChange={ this.handleRecipeImage.bind(this)}/>
       photo_nav_class = "active";
     }
     else {
@@ -244,7 +300,13 @@ export default class AddRecipe extends Component {
           <button className="btn btn-default pull-left" onClick={this.backHandler.bind(this)}>
             Zurück
           </button>
-          <button className="btn btn-success pull-right">Speichern</button>
+          <button
+            data-loading-text="Hochladen..."
+            autoComplete="off"
+            ref="saveButton"
+            className="btn btn-success pull-right">
+            Speichern
+          </button>
 
         </form>
 
