@@ -31,6 +31,11 @@ class PhotoRecipe extends Component {
             onChange={ this.handleImageChange.bind(this)}
             ref="recipeImage" />
         </div>
+        <img id="recipeImgPreview"
+          ref="recipeImgPreview"
+          src={this.props.imgSrc}
+          className="img-responsive"/>
+
       </div>
     )
   }
@@ -76,6 +81,8 @@ export default class AddRecipe extends Component {
     this.state = {
       isPhotoRecipe: false,
       ingredients: [{}],
+      recipePreviewSrc: null,
+      uploadingImage: 0
     };
   }
   backHandler (event) {
@@ -128,85 +135,89 @@ export default class AddRecipe extends Component {
       }
     });
   }
-  handleImageChange(event, onStart, onUploaded) {
+  handleImageChange(file, resolution, idStateKey, srcStateKey) {
+    let self = this;
     let saveButton = $(this.refs.saveButton);
     saveButton.button('loading');
-    event.preventDefault();
-    let target = event.currentTarget;
 
-    let self = this;
+    let img = new Image();
+    img.file = file;
+    var reader = new FileReader();
+    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.readAsDataURL(file);
 
-    if ( target && target.files[0]) {
-      let file = target.files[0];
+    img.onload = () => {
+      let canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 300;
+      let ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0,0, canvas.width, canvas.height);
+      let src = canvas.toDataURL("image/jpeg");
+
+      let new_state = {}
+      new_state[srcStateKey] = src;
+      self.setState(new_state);
+
+
       let uploadInstance = Images.insert({
-        file: file,
+        file: src,
+        isBase64: true,
+        fileName: file.name,
         streams: 'dynamic',
         chunkSize: 'dynamic',
         allowWebWorkers: true,
-        transport: 'http',
+        // transport: 'http',
       }, false);
 
-      uploadInstance.on('start', onStart);
-      uploadInstance.on('uploaded', onUploaded);
+      uploadInstance.on('start', () => {
+        self.setState((prevState) => {
+            return {uploadingImage: prevState.uploadingImage + 1};
+        });
+      });
+      uploadInstance.on('uploaded', (error, fileObj) => {
+        if (!error) {
+          let new_state = {}
+          new_state[idStateKey] = fileObj._id;
+          self.setState(new_state);
+        }
+        self.setState((prevState) => {
+          return { uploadingImage: prevState.uploadingImage - 1};
 
+        });
+        if ( self.state.uploadingImage === 0 ) {
+          let saveButton = $(self.refs.saveButton);
+          saveButton.button('reset');
+        }
+
+      });
       uploadInstance.start();
     }
+
   }
 
   handleTitleImage(event) {
-    const self = this;
-    function onStart() {
-      self.setState({uploadingTitleImage: true});
+    let target = event.currentTarget;
+    if (target.files && target.files[0]) {
+      let file = target.files[0];
+      let resolution = {
+        width: 400,
+        height: 300,
+      }
+      this.handleImageChange(file, resolution, "titleImage", "titlePreviewSrc");
     }
-
-    function onUploaded(error, fileObj) {
-      if (error) {
-        console.log(error);
-      }
-      else {
-        self.setState({
-          titleImage: fileObj._id,
-        });
-        self.refs.titleImage.file = '';
-      }
-      self.setState({
-        uploadingTitleImage: false
-      })
-      if (! (self.state.uploadingRecipeImage && self.state.uploadingTitleImage)) {
-        let saveButton = $(self.refs.saveButton);
-        saveButton.button('reset');
-      }
-    }
-
-    this.handleImageChange(event, onStart, onUploaded);
   }
 
   handleRecipeImage(event) {
-    const self = this;
+    let target = event.currentTarget;
 
-    function onStart() {
-      self.setState({uploadingRecipeImage: true});
+    if (target.files && target.files[0]) {
+      let file = target.files[0];
+      let resolution = {
+        width: 800,
+        height: 600,
+      }
+      this.handleImageChange(file, resolution, "recipeImage", "recipePreviewSrc");
     }
-
-    function onUploaded(error, fileObj) {
-      if (error) {
-        console.log(error);
-      }
-      else {
-        self.setState({
-          recipeImage: fileObj._id,
-        });
-      }
-      self.setState({
-        uploadingRecipeImage: false
-      })
-      if (! self.state.uploadingRecipeImage && self.state.uploadingTitleImage) {
-        let saveButton = $(self.refs.saveButton);
-        saveButton.button('reset');
-      }
-
-    }
-    this.handleImageChange(event, onStart, onUploaded);
   }
 
   hasError(name) {
@@ -219,6 +230,7 @@ export default class AddRecipe extends Component {
     let photo_nav_class = "";
     if (this.state.isPhotoRecipe) {
       center = <PhotoRecipe
+        imgSrc={this.state.recipePreviewSrc}
       onImageChange={ this.handleRecipeImage.bind(this)}/>
       photo_nav_class = "active";
     }
@@ -237,20 +249,46 @@ export default class AddRecipe extends Component {
         <h1>Rezept hinzufügen</h1>
         <form className="new-recipe"
           onSubmit={this.handleSubmit.bind(this)}>
-          <div className="form-horizontal">
-            <div className={ "form-group " + (this.hasError('title') ? 'has-error' :'') }>
-              <label className="col-sm-2 control-label" htmlFor="title">Titel: </label>
-              <div className=" col-sm-10">
+          <div className="row">
+            <div className="col-xs-12 col-md-6">
+              <img id="titleImgPreview"
+                src={this.state.titlePreviewSrc}
+                className="img-responsive"/>
+              <div className={ "form-group " + (this.hasError('titleImage') ? 'has-error' :'') }>
+                <label className="control-label" htmlFor="titleImage">Titelbild:</label>
                 <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Titel"
-                  name="title"
-                  ref="title"
-                  id="title"
-                  onChange={this.handleChange.bind(this)}
+                  type="file"
+                  accept="image/*"
+                  name="titleImage"
+                  ref="titleImage"
+                  id="titleImage"
+                  onChange={ this.handleTitleImage.bind(this)}
                   />
               </div>
+
+            </div>
+            <div className="col-xs-12 col-md-6">
+              <div className="form-horizontal">
+                <div className={ "form-group " + (this.hasError('title') ? 'has-error' :'') }>
+                  <label className="col-sm-2 control-label" htmlFor="title">Titel: </label>
+                  <div className=" col-sm-10">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Titel"
+                      name="title"
+                      ref="title"
+                      id="title"
+                      onChange={this.handleChange.bind(this)}
+                      />
+                  </div>
+                </div>
+              </div>
+              <CategoryContainer
+                inputName="category"
+                onChange={this.handleCategoryChange.bind(this)}
+                errorClass={ this.hasError('category') ? 'has-error': ''}
+              />
             </div>
           </div>
           {
@@ -259,11 +297,6 @@ export default class AddRecipe extends Component {
                 { JSON.stringify(this.state, null, 2)}
               </pre>
           }
-          <CategoryContainer
-            inputName="category"
-            onChange={this.handleCategoryChange.bind(this)}
-            errorClass={ this.hasError('category') ? 'has-error': ''}
-            />
 
           <ul className="nav nav-tabs">
             <li role="presentation" className={text_nav_class}>
@@ -278,38 +311,24 @@ export default class AddRecipe extends Component {
               </a></li>
           </ul>
         { center }
-        <div className={ "form-group pull-left " + (this.hasError('titleImage') ? 'has-error' :'') }>
-          <label className="control-label" htmlFor="titleImage">Titelbild:</label>
-          <input
-            type="file"
-            accept="image/*"
-            name="titleImage"
-            ref="titleImage"
-            id="titleImage"
-            onChange={ this.handleTitleImage.bind(this)}
-            />
-        </div>
-        <img ref="title_image_img"/>
-        <div className="checkbox pull-right">
+        <div className="checkbox ">
           <label>
             <input type="checkbox"
               onChange={this.handleStatusChange.bind(this)} /> Privat
-            </label>
-          </div>
-          <div className="clearfix" />
-          <button className="btn btn-default pull-left" onClick={this.backHandler.bind(this)}>
-            Zurück
-          </button>
-          <button
-            data-loading-text="Hochladen..."
-            autoComplete="off"
-            ref="saveButton"
-            className="btn btn-success pull-right">
-            Speichern
-          </button>
-
+          </label>
+        </div>
+        <div className="clearfix" />
+        <button className="btn btn-default pull-left" onClick={this.backHandler.bind(this)}>
+          Zurück
+        </button>
+        <button
+          data-loading-text="Hochladen..."
+          autoComplete="off"
+          ref="saveButton"
+          className="btn btn-success pull-right">
+          Speichern
+        </button>
         </form>
-
       </div>
     )
 
