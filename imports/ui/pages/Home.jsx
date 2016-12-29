@@ -10,7 +10,6 @@ import RecipeListItem from '../components/RecipeListItems';
 
    renderRecipes() {
      return this.props.recipes.map((recipe) => {
-       console.log("renderRecipes: ", recipe.titleImage)
        return (
          <RecipeListItem recipe={recipe} image_id={recipe.titleImage} />
        )

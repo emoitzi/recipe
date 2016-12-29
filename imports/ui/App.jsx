@@ -9,7 +9,6 @@ class App extends Component {
     return (
       <div>
         <div className="container">
-          <AccountsUIWrapper />
           {this.props.children}
         </div>
       </div>
@@ -17,6 +16,6 @@ class App extends Component {
   }
 }
 
-export default createContainer(() => {
+export default AppContainer = createContainer(() => {
   return {};
 }, App);

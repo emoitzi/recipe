@@ -31,10 +31,7 @@ RecipeListItem.propTypes = {
 
 export default createContainer ( ({image_id}) => {
   const handle = Meteor.subscribe("images.one", image_id);
-  console.log('image_id', image_id);
   const image = Images.findOne({_id: image_id});
-  console.log('image', image);
-  console.log('ready', handle.ready() ? 'true': 'false');
   return {
     image: image,
   }

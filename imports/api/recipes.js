@@ -26,7 +26,6 @@ IngredientSchema = new SimpleSchema({
 Recipes.schema = new SimpleSchema({
   userId: {
     type: String,
-    optional: true,
   },
   title: {
     type: String,
@@ -73,23 +72,31 @@ Recipes.schema = new SimpleSchema({
 });
 
 
-Meteor.methods({
-  'recipes.insert' (fields) {
-    Recipes.schema.clean(fields);
-    console.log('fields: ', fields);
-    if (fields.ingredients) {
-      let remove_index = []
-      for (let i=0; i< fields.ingredients.length; ++i) {
-        let obj = fields.ingredients[i];
-        if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-          remove_index.push(i);
-        }
-      }
-      for (let i=0; i < remove_index.length; ++i) {
-        fields.ingredients.splice(remove_index[i], 1);
+function cleanIngredients(fields) {
+  if (fields.ingredients) {
+    let remove_index = []
+    for (let i=0; i< fields.ingredients.length; ++i) {
+      let obj = fields.ingredients[i];
+      if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+        remove_index.push(i);
       }
     }
+    for (let i=0; i < remove_index.length; ++i) {
+      fields.ingredients.splice(remove_index[i], 1);
+    }
+  }
+}
 
+Meteor.methods({
+  'recipes.insert' (fields) {
+    if (! this.userId) {
+      throw new Meteor.Error('recipes.not-authorized');
+    }
+
+    Recipes.schema.clean(fields);
+    cleanIngredients(fields);
+
+    fields['userId'] = this.userId;
     Recipes.schema.validate(fields);
     Recipes.insert(fields);
   }

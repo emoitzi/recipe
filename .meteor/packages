@@ -20,7 +20,8 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 
 twbs:bootstrap
 react-meteor-data
-accounts-ui
 accounts-password
 aldeed:simple-schema
 ostrio:files
+std:accounts-ui
+accounts-ui
