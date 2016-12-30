@@ -23,5 +23,6 @@ react-meteor-data
 accounts-password
 aldeed:simple-schema
 ostrio:files
-std:accounts-ui
 accounts-ui
+useraccounts:bootstrap
+gadicc:blaze-react-component
