@@ -1,0 +1,15 @@
+app:
+  build: .
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./docker_data/app:/data
+  links:
+    - mongo
+  environment:
+    - ROOT_URL=https://rezepte.ewald-moitzi.at
+    - MONGO_URL=mongodb://mongo:27017/meteor
+mongo:
+  image: mongo:latest
+  volumes:
+    - ./docker_data/mongo:/data/db
