@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 import { Recipes } from '../imports/api/recipes.js'
 import { Images } from '../imports/api/images.js';
@@ -23,5 +24,15 @@ Meteor.startup(() => {
     remove() { return true; },
   });
 
+  if (Meteor.users.find().count() === 0 ) {
+    Accounts.createUser({
+        username: 'admin',
+        password: 'admin',
+        profile: {
+            first_name: '',
+            last_name: '',
+        }
+    });
+  }
   // code to run on server at startup
 });
