@@ -11,7 +11,7 @@ import RecipeListItem from '../components/RecipeListItems';
    renderRecipes() {
      return this.props.recipes.map((recipe) => {
        return (
-         <RecipeListItem recipe={recipe} image_id={recipe.titleImage} />
+         <RecipeListItem key={ recipe._id } recipe={recipe} image_id={recipe.titleImage} />
        )
      });
    }

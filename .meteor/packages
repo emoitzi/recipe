@@ -20,9 +20,9 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 
 twbs:bootstrap
 react-meteor-data
-accounts-password
+accounts-password@1.3.3
 aldeed:simple-schema
 ostrio:files
-accounts-ui
 useraccounts:bootstrap
 gadicc:blaze-react-component
+babrahams:constellation

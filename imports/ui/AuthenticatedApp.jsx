@@ -7,13 +7,11 @@ import AccountsUIWrapper from './components/AccountsUIWrapper.jsx';
 
 class AuthenticatedApp extends Component {
   componentWillMount() {
-    console.log('willMount', this.props.loggedIn);
     if (!this.props.loggedIn) {
       browserHistory.push('/signin');
     }
   }
   componentDidUpdate() {
-    console.log('DidUpdate', this.props.loggedIn);
     if (!this.props.loggedIn) {
       browserHistory.push('/signin');
     }

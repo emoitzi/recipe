@@ -12,10 +12,3 @@ AccountsTemplates.addFields([
   },
   pwd
 ]);
-
-
-Accounts.ui.config({
-
-  passwordSignupFields: 'USERNAME_ONLY',
-
-});

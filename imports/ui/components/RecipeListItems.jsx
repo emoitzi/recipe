@@ -11,7 +11,7 @@ class RecipeListItem extends Component {
   render() {
     const link = "/recipe/" + this.props.recipe._id;
     return (
-      <li className="col-xs-12 col-md-4">
+      <li className="col-xs-12 col-md-4" >
         <a href={ link } className="thumbnail">
         {
           this.props.image && <img src={ this.props.image.link()} alt={this.props.image.name} />
