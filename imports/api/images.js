@@ -6,6 +6,7 @@ export const Images = new FilesCollection({
   collectionName: 'Images',
   allowClientCode: false,
   storagePath: '/data/',
+  downloadRoute: '/images/',
 })
 
 if (Meteor.isServer){
