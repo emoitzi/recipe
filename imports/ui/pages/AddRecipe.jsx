@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router';
 import { ValidationError } from 'meteor/mdg:validation-error';
 
 
-import  Ingredients  from '../components/Ingredients';
+import  EditIngredients  from '../components/EditIngredients';
 import  CategoryContainer from '../components/Category';
 
 import { Recipes } from '../../api/recipes.js';
@@ -57,7 +57,7 @@ class TextRecipe extends Component {
   render() {
     return (
       <div>
-        <Ingredients value={this.props.value}
+        <EditIngredients value={this.props.value}
           onChange={this.ingredientsChange.bind(this)}/>
         <div className={ "form-group "  + this.props.errorClass }>
           <label className="control-label" htmlFor="preparation">Zubereitung:</label>

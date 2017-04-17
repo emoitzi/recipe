@@ -57,6 +57,7 @@ Recipes.schema = new SimpleSchema({
   },
   category: {
     type: String,
+    regEx: SimpleSchema.RegEx.Id,
   },
   recipeImage: {
     type: String,
