@@ -5,8 +5,9 @@ import { Meteor } from 'meteor/meteor';
 export const Images = new FilesCollection({
   collectionName: 'Images',
   allowClientCode: false,
-  storagePath: '/data/',
-  downloadRoute: '/images/',
+  storagePath: '/data',
+  downloadRoute: '/images',
+  public: true,
 })
 
 if (Meteor.isServer){
