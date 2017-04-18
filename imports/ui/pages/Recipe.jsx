@@ -1,5 +1,6 @@
 import React, {Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import {browserHistory} from 'react-router';
 
 import { Recipes } from '../../api/recipes.js';
 import { Images } from '../../api/images.js';
@@ -7,6 +8,10 @@ import { Categories } from '../../api/categories.js';
 import Ingredients  from '../components/Ingredients'
 
 class Recipe extends Component {
+  backHandler (event) {
+    event.preventDefault();
+    browserHistory.push('/')
+  }
   render() {
     if (!this.props.recipe) {
       return false;
@@ -41,6 +46,10 @@ class Recipe extends Component {
             <Ingredients ingredients={ this.props.recipe.ingredients }/>
           </div>
         }
+        <button className="btn btn-default pull-left" onClick={this.backHandler.bind(this)}>
+          Zurück
+        </button>
+
       </div>
 
     )
