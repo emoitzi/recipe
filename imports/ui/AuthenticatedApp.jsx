@@ -2,7 +2,7 @@ import React, {Component, PropTypes } from 'react';
 import {createContainer } from 'meteor/react-meteor-data';
 import {browserHistory} from 'react-router';
 
-import AccountsUIWrapper from './components/AccountsUIWrapper.jsx';
+import NavBar from './components/NavBar.jsx';
 
 
 class AuthenticatedApp extends Component {
@@ -21,7 +21,7 @@ class AuthenticatedApp extends Component {
     return (
       <div>
         <div className="container">
-          <AccountsUIWrapper />
+          <NavBar />
           {this.props.children}
         </div>
       </div>
