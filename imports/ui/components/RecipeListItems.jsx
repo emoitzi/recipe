@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router';
 
 import { Images } from '../../api/images.js';
 
@@ -12,12 +13,12 @@ class RecipeListItem extends Component {
     const link = "/recipe/" + this.props.recipe._id;
     return (
       <li className="col-xs-12 col-md-4" >
-        <a href={ link } className="thumbnail">
+        <Link to={ link } className="thumbnail">
         {
           this.props.image && <img src={ this.props.image.link()} alt={this.props.image.name} />
         }
           <span> { this.props.recipe.title}</span>
-        </a>
+        </Link>
       </li>
     )
   }
