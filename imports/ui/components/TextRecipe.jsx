@@ -26,7 +26,7 @@ export default class TextRecipe extends Component {
             id="preparation"
             placeholder="Zubereitung"
             name="preparation"
-            value={ this.props.preparation }
+            value={ this.props.recipe.preparation }
             onChange={ this.handleChange.bind(this)}
             />
         </div>

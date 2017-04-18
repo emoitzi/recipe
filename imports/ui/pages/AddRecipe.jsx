@@ -23,7 +23,8 @@ export default AddRecipe = createContainer(() => {
   }
   return {
     onSubmit: handleSubmit,
-    errors: errors
+    errors: errors,
+    ready: true,
   };
 
 }, RecipeForm);

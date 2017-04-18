@@ -100,5 +100,18 @@ Meteor.methods({
     fields['userId'] = this.userId;
     Recipes.schema.validate(fields);
     Recipes.insert(fields);
+  },
+  'recipes.update' (id, fields) {
+    let currentRecipe = Recipes.findOne(id);
+    if (! this.userId || this.userId != currentRecipe.userId) {
+      throw new Meteor.Error('recipes.not-authorized');
+    }
+
+    Recipes.schema.clean(fields);
+    cleanIngredients(fields);
+
+    Recipes.schema.validate(fields);
+    Recipes.update({_id: id }, fields);
   }
+
 });

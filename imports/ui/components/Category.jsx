@@ -9,7 +9,7 @@ export class Category extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {value: ''}
+    this.state = {value: props.currentCategory || ''}
 
     this.getCategories = this.getCategories.bind(this);
     this.renderCategories = this.renderCategories.bind(this);
@@ -56,6 +56,7 @@ Category.propTypes = {
   inputName: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   errorClass: PropTypes.string,
+  currentCategory: PropTypes.string,
 }
 
 export default CategoryContainer = createContainer( () => {

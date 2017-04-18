@@ -1,7 +1,7 @@
 import React, {Component  } from 'react';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 
 import { Recipes } from '../../api/recipes.js';
 import { Images } from '../../api/images.js';
@@ -20,6 +20,9 @@ class Recipe extends Component {
     return (
       <div className="container">
         <h1>{ this.props.recipe.title} <span className="label label-default">{ this.props.categoryName}</span></h1>
+        {
+          this.props.recipe.userId == Meteor.userId() && <Link to={this.props.location.pathname + '/edit'}>Bearbeiten</Link>
+        }
         <div className="row">
           <div className="col-xs-12 col-md-6">
             <img src={ this.props.titleImage && this.props.titleImage.link()} className="img-responsive center-block" />

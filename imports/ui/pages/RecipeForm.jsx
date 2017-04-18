@@ -22,7 +22,6 @@ export default class RecipeForm extends Component {
       preparation: '',
     }
 
-
     this.state = {
       recipe : props.recipe || default_recipe,
       recipePreviewSrc: props.recipePreviewSrc || '',
@@ -31,6 +30,16 @@ export default class RecipeForm extends Component {
       errors: props.errors,
     };
   }
+  componentWillReceiveProps( props) {
+    let state = {
+      recipe : props.recipe || this.state.recipe,
+      recipePreviewSrc: props.recipePreviewSrc || '',
+      titlePreviewSrc: props.titlePreviewSrc || '',
+      errors: props.errors,
+    };
+    this.setState(state);
+  }
+
   backHandler (event) {
     event.preventDefault();
     browserHistory.push('/')
@@ -189,6 +198,11 @@ export default class RecipeForm extends Component {
   }
 
   render ()  {
+    if (!this.props.ready) {
+      return (
+        <p>loading</p>
+      )
+    }
     let center = null;
     let text_nav_class = "";
     let photo_nav_class = "";
@@ -250,6 +264,7 @@ export default class RecipeForm extends Component {
               </div>
               <CategoryContainer
                 inputName="category"
+                currentCategory={ this.state.recipe.category}
                 onChange={this.handleCategoryChange.bind(this)}
                 errorClass={ this.hasError('category') ? 'has-error': ''}
               />
@@ -305,5 +320,6 @@ RecipeForm.propTypes = {
   recipe: PropTypes.object,
   recipePreviewSrc: PropTypes.string,
   titlePreviewSrc: PropTypes.string,
+  ready: PropTypes.bool,
 
 }

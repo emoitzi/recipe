@@ -42,6 +42,7 @@ export default class EditIngredients extends Component {
             <input
               type="text"
               className="form-control"
+              value={this.props.ingredients[index].amount }
               onChange={this.handleAmountChange.bind(this, index)}
               />
         </div>
@@ -49,6 +50,7 @@ export default class EditIngredients extends Component {
             <input
               type="text"
               className="form-control"
+              value={this.props.ingredients[index].unit }
               onChange={this.handleUnitChange.bind(this, index)}
               />
         </div>
@@ -56,6 +58,7 @@ export default class EditIngredients extends Component {
             <input
               type="text"
               className="form-control"
+              value={this.props.ingredients[index].ingredient }
               onChange={this.handleIngredientChange.bind(this, index)}
               />
         </div>

@@ -6,6 +6,7 @@ import AuthenticatedAppContainer from '../../ui/AuthenticatedApp.jsx';
 import AdminContainer from '../../ui/AdminApp.jsx'
 import Recipe from '../../ui/pages/Recipe.jsx';
 import AddRecipe from '../../ui/pages/AddRecipe.jsx';
+import EditRecipe from '../../ui/pages/EditRecipe.jsx';
 import NotFound from '../../ui/pages/NotFound.jsx';
 import Home from  '../../ui/pages/Home.jsx';
 import ChangePwd from '../../ui/pages/ChangePwd.jsx';
@@ -18,6 +19,7 @@ export const renderRoutes = ()  => (
       <Route path="recipe" >
         <Route path="add" component={AddRecipe} />
         <Route path=":id" component={Recipe} />
+        <Route path=":id/edit" component={EditRecipe} />
       </Route>
       <Route path="changepwd" component={ChangePwd} />
     </Route>
