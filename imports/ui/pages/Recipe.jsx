@@ -21,9 +21,9 @@ class Recipe extends Component {
           { !this.props.recipe.isPhotoRecipe &&
             <div className="col-xs-12 col-md-6">
               <h2>Zubereitung</h2>
-              <p>
+              <pre>
               { this.props.recipe.preparation}
-              </p>
+              </pre>
             </div>
           }
           {
