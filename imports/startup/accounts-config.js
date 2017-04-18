@@ -12,3 +12,7 @@ AccountsTemplates.addFields([
   },
   pwd
 ]);
+
+AccountsTemplates.configure({
+  forbidClientAccountCreation: true,
+})

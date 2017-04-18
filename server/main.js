@@ -5,6 +5,18 @@ import { Recipes } from '../imports/api/recipes.js'
 import { Images } from '../imports/api/images.js';
 import { Categories } from '../imports/api/categories.js';
 import '../imports/startup/accounts-config.js';
+import '../imports/api/users.js';
+
+// Server
+Meteor.publish('userData', function () {
+  if (this.userId) {
+    return Meteor.users.find({ }, {
+      fields: { isAdmin: 1, username: 1}
+    });
+  } else {
+    this.ready();
+  }
+});
 
 
 Meteor.startup(() => {
@@ -25,14 +37,19 @@ Meteor.startup(() => {
   });
 
   if (Meteor.users.find().count() === 0 ) {
-    Accounts.createUser({
+    let userId = Accounts.createUser({
         username: 'admin',
         password: 'admin',
         profile: {
             first_name: '',
             last_name: '',
-        }
+        },
     });
+    Meteor.users.update(userId, {
+      $set: {
+        isAdmin: true,
+      }
+    })
   }
   if (Categories.find().count() === 0) {
     Categories.insert({"name": "Brot"});
