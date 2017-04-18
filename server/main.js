@@ -51,10 +51,4 @@ Meteor.startup(() => {
       }
     })
   }
-  if (Categories.find().count() === 0) {
-    Categories.insert({"name": "Brot"});
-    Categories.insert({"name": "Mehlspeise"});
-    Categories.insert({"name": "Suppe"});
-  }
-  // code to run on server at startup
 });

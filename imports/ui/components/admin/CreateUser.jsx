@@ -21,11 +21,11 @@ export default class CreateUser extends Component {
     return (
       <form className="form-inline" onSubmit={ this.onSubmit.bind(this)}>
         <div className="form-group">
-          <label htmlFor="Username">Benutzername</label>
+          <label htmlFor="username">Benutzername</label>
           <input type="text" className="form-control" id="username" name="username" onChange={ this.valueChange.bind(this )} />
         </div>
         <div className="form-group">
-          <label htmlFor="Password">Passwort</label>
+          <label htmlFor="password">Passwort</label> 
           <input type="text" className="form-control" id="password" name="password" onChange={ this.valueChange.bind(this)} />
         </div>
         <button type="submit" className="btn btn-default">Benutzer erstellen</button>
