@@ -99,7 +99,7 @@ Meteor.methods({
 
     fields['userId'] = this.userId;
     Recipes.schema.validate(fields);
-    Recipes.insert(fields);
+    return Recipes.insert(fields);
   },
   'recipes.update' (id, fields) {
     let currentRecipe = Recipes.findOne(id);

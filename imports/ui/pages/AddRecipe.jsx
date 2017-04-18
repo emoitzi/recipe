@@ -9,7 +9,7 @@ export default AddRecipe = createContainer(() => {
   let errors = {};
   function handleSubmit (recipe) {
     errors = {};
-    Meteor.call('recipes.insert', recipe, (err) => {
+    Meteor.call('recipes.insert', recipe, (err, id) => {
       if (err) {
         err.details.forEach((fieldError) => {
           errors[fieldError.name] = true;
@@ -17,7 +17,7 @@ export default AddRecipe = createContainer(() => {
       }
       else {
         //success
-        browserHistory.push('/');
+        browserHistory.push('/recipe/' + id);
       }
     });
   }

@@ -34,7 +34,7 @@ export default EditRecipe = createContainer((params) => {
       }
       else {
         //success
-        browserHistory.push('/');
+        browserHistory.push('/recipe/' + recipe._id);
       }
     });
   }
