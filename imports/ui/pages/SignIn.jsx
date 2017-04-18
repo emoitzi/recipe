@@ -8,7 +8,6 @@ import  Blaze from 'meteor/gadicc:blaze-react-component';
 class SignIn extends Component {
 
   componentDidUpdate() {
-    console.log('signin DidUpdate', this.props.loggedIn);
     if (this.props.loggedIn) {
       browserHistory.push('/');
     }
