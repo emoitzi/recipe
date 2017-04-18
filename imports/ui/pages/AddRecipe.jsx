@@ -4,7 +4,6 @@ import {browserHistory} from 'react-router';
 import { ValidationError } from 'meteor/mdg:validation-error';
 
 
-import EditIngredients  from '../components/EditIngredients';
 import CategoryContainer from '../components/Category';
 import TextRecipe from '../components/TextRecipe';
 import PhotoRecipe from '../components/PhotoRecipe';
