@@ -2,38 +2,38 @@ import React, {Component } from 'react';
 
 export default class EditIngredients extends Component {
   constructor(props) {
-    props.value = props.value || {};
+    props.ingredients = props.ingredients || {};
     super(props);
 
   }
 
   addButton(e) {
     e.preventDefault();
-    let value = this.props.value;
-    value.push({});
-    this.props.onChange(value);
+    let ingredient = this.props.ingredients;
+    ingredient.push({});
+    this.props.onChange(ingredient);
   }
 
   handleAmountChange(index, e){
-    let value = this.props.value;
-    value[index]['amount'] = e.target.value;
-    this.props.onChange(value)
+    let ingredient = this.props.ingredients;
+    ingredient[index]['amount'] = e.target.value;
+    this.props.onChange(ingredient)
   }
   handleUnitChange(index,  e) {
-    let value = this.props.value;
-    value[index]['unit'] = e.target.value;
-    this.props.onChange(value)
+    let ingredient = this.props.ingredients;
+    ingredient[index]['unit'] = e.target.value;
+    this.props.onChange(ingredient)
   }
   handleIngredientChange(index, e){
-    let value = this.props.value;
-    value[index]['ingredient'] = e.target.value;
-    this.props.onChange(value)
+    let ingredient = this.props.ingredients;
+    ingredient[index]['ingredient'] = e.target.value;
+    this.props.onChange(ingredient)
   }
   handleRemove (index, e) {
     e.preventDefault();
-    let value = this.props.value;
-    value.splice(index, 1);
-    this.props.onChange(value);
+    let ingredient = this.props.ingredients;
+    ingredient.splice(index, 1);
+    this.props.onChange(ingredient);
   }
   renderLine(index) {
     return (
@@ -95,8 +95,9 @@ export default class EditIngredients extends Component {
 
   }
   renderIngredients () {
-    const value = this.props.value
-    return value.map((value, index) => (
+
+    const ingredients = this.props.ingredients;
+    return ingredients.map((ingredient, index) => (
       <div key={index}>
         { this.renderLine(index)}
       </div>

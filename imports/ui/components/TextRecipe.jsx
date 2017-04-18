@@ -8,16 +8,16 @@ export default class TextRecipe extends Component {
   }
 
   ingredientsChange(value) {
-    this.props.onChange({ingredients: value});
+    this.props.onChange('ingredients', value);
   }
   handleChange(event) {
-    this.props.onChange({preparation: event.target.value});
+    this.props.onChange('preparation' ,event.target.value);
   }
 
   render() {
     return (
       <div>
-        <EditIngredients value={this.props.value}
+        <EditIngredients ingredients={this.props.recipe.ingredients}
           onChange={this.ingredientsChange.bind(this)}/>
         <div className={ "form-group "  + this.props.errorClass }>
           <label className="control-label" htmlFor="preparation">Zubereitung:</label>
@@ -26,7 +26,7 @@ export default class TextRecipe extends Component {
             id="preparation"
             placeholder="Zubereitung"
             name="preparation"
-            ref="preparation"
+            value={ this.props.preparation }
             onChange={ this.handleChange.bind(this)}
             />
         </div>
