@@ -4,76 +4,13 @@ import {browserHistory} from 'react-router';
 import { ValidationError } from 'meteor/mdg:validation-error';
 
 
-import  EditIngredients  from '../components/EditIngredients';
-import  CategoryContainer from '../components/Category';
+import EditIngredients  from '../components/EditIngredients';
+import CategoryContainer from '../components/Category';
+import TextRecipe from '../components/TextRecipe';
+import PhotoRecipe from '../components/PhotoRecipe';
 
 import { Recipes } from '../../api/recipes.js';
 import { Images } from '../../api/images.js';
-
-
-class PhotoRecipe extends Component {
-  constructor(props) {
-    super(props);
-  }
-  handleImageChange (event) {
-    this.props.onImageChange(event);
-  }
-  render()  {
-    return (
-      <div>
-        <div className="form-group">
-          <label htmlFor="recipeImage">Foto:</label>
-          <input
-            type="file"
-            accept="image/*"
-            name="recipeImage"
-            id="recipeImage"
-            onChange={ this.handleImageChange.bind(this)}
-            ref="recipeImage" />
-        </div>
-        <img id="recipeImgPreview"
-          ref="recipeImgPreview"
-          src={this.props.imgSrc}
-          className="img-responsive"/>
-
-      </div>
-    )
-  }
-}
-
-class TextRecipe extends Component {
-  constructor(props) {
-    super(props)
-    this.props.errorClass = props.errorClass || '';
-  }
-
-  ingredientsChange(value) {
-    this.props.onChange({ingredients: value});
-  }
-  handleChange(event) {
-    this.props.onChange({preparation: event.target.value});
-  }
-
-  render() {
-    return (
-      <div>
-        <EditIngredients value={this.props.value}
-          onChange={this.ingredientsChange.bind(this)}/>
-        <div className={ "form-group "  + this.props.errorClass }>
-          <label className="control-label" htmlFor="preparation">Zubereitung:</label>
-          <textarea
-            className="form-control"
-            id="preparation"
-            placeholder="Zubereitung"
-            name="preparation"
-            ref="preparation"
-            onChange={ this.handleChange.bind(this)}
-            />
-        </div>
-      </div>
-    )
-  }
-}
 
 export default class AddRecipe extends Component {
   constructor(props) {
