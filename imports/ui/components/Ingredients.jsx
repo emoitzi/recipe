@@ -18,7 +18,6 @@ class Ingredients extends Component {
     )
   }
   renderTable() {
-    console.log(this.props.ingredients);
     const value = this.props.ingredients;
     let self = this;
     return value.map(function (ingredient, index) {
