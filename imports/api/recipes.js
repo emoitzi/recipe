@@ -5,12 +5,6 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 
 export const Recipes = new Mongo.Collection('recipes');
 
-if (Meteor.isServer) {
-  Meteor.publish('recipes', () => {
-    return Recipes.find({});
-  });
-}
-
 IngredientSchema = new SimpleSchema({
   amount: {
     type: Number,

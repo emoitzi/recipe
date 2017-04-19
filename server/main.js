@@ -7,6 +7,19 @@ import { Categories } from '../imports/api/categories.js';
 import '../imports/startup/accounts-config.js';
 import '../imports/api/users.js';
 
+
+Meteor.publish('recipes', function() {
+  if (!this.userId) {
+    return this.ready();
+  }
+  return Recipes.find({
+    $or: [
+      { private: {$ne: true} },
+      { userId: this.userId },
+    ]
+  });
+});
+
 // Server
 Meteor.publish('userData', function () {
   if (this.userId) {

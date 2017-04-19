@@ -20,6 +20,7 @@ export default class RecipeForm extends Component {
       ingredients:  [{}],
       title: '',
       preparation: '',
+      private: false,
     }
 
     this.state = {
@@ -285,7 +286,8 @@ export default class RecipeForm extends Component {
         <div className="checkbox ">
           <label>
             <input type="checkbox"
-              onChange={this.handleStatusChange.bind(this)} /> Privat
+              onChange={this.handleStatusChange.bind(this)}
+              checked={ this.state.recipe.private} /> Privat
           </label>
         </div>
         <div className="clearfix" />
