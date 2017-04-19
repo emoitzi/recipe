@@ -10,6 +10,24 @@ export const Images = new FilesCollection({
   public: true,
 })
 
+export const resolutions = {
+  title: {
+    width: 400,
+    height: 300,
+  },
+  recipe: {
+    width: 800,
+    height: 600,
+  }
+}
+
+export function defaultTitleImageUrl() {
+  const width = resolutions.title.width.toString();
+  const height = resolutions.title.height.toString();
+  return "https://unsplash.it/g/" + width + "/" + height + "?image=250&blur";
+}
+
+
 if (Meteor.isServer){
   Meteor.publish("images.one", function(id){
     const image = Images.find({_id: id});

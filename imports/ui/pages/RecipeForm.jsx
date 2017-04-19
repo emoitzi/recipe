@@ -9,7 +9,7 @@ import CategoryContainer from '../components/Category';
 import TextRecipe from '../components/TextRecipe';
 import PhotoRecipe from '../components/PhotoRecipe';
 
-import { Recipes } from '../../api/recipes.js';
+import { Recipes, resolutions } from '../../api/recipes.js';
 import { Images } from '../../api/images.js';
 
 export default class RecipeForm extends Component {
@@ -113,8 +113,8 @@ export default class RecipeForm extends Component {
     img.onload = () => {
 
       let canvas = document.createElement("canvas");
-      canvas.width = 400;
-      canvas.height = 300;
+      canvas.width = resolution.width;
+      canvas.height = resolution.height;
       let ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0,0, canvas.width, canvas.height);
       let src = canvas.toDataURL("image/jpeg");
@@ -172,11 +172,7 @@ export default class RecipeForm extends Component {
     let target = event.currentTarget;
     if (target.files && target.files[0]) {
       let file = target.files[0];
-      let resolution = {
-        width: 400,
-        height: 300,
-      }
-      this.handleImageChange(file, resolution, "titleImage", "titlePreviewSrc");
+      this.handleImageChange(file, resolutions.title, "titleImage", "titlePreviewSrc");
     }
   }
 
@@ -185,11 +181,7 @@ export default class RecipeForm extends Component {
 
     if (target.files && target.files[0]) {
       let file = target.files[0];
-      let resolution = {
-        width: 800,
-        height: 600,
-      }
-      this.handleImageChange(file, resolution, "recipeImage", "recipePreviewSrc");
+      this.handleImageChange(file, resolutions.recipe, "recipeImage", "recipePreviewSrc");
     }
   }
 
