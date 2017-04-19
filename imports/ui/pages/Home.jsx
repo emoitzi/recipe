@@ -4,14 +4,15 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Recipes } from '../../api/recipes.js'
-import RecipeListItem from '../components/RecipeListItems';
+import RecipeListItem0 from '../components/RecipeListItems0';
 
  class Home extends Component {
 
    renderRecipes() {
-     return this.props.recipes.map((recipe) => {
+     let ids = Array.from({length: 1084}, (v, k) => k);  
+     return ids.map((id) => {
        return (
-         <RecipeListItem key={ recipe._id } recipe={recipe} image_id={recipe.titleImage} />
+         <RecipeListItem0 key={ id } id={id} />
        )
      });
    }
