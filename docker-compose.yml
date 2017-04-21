@@ -9,6 +9,8 @@ app:
   environment:
     - ROOT_URL=https://rezepte.ewald-moitzi.at
     - MONGO_URL=mongodb://mongo:27017/meteor
+  restart:
+    - always
 mongo:
   image: mongo:latest
   volumes:
