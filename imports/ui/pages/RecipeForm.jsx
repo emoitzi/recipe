@@ -208,7 +208,9 @@ export default class RecipeForm extends Component {
     if (this.state.recipe.isPhotoRecipe) {
       center = <PhotoRecipe
         imgSrc={this.state.recipePreviewSrc}
-      onImageChange={ this.handleRecipeImage.bind(this)}/>
+        onImageChange={ this.handleRecipeImage.bind(this)}
+        errorClass={ this.hasError('recipeImage') ? 'has-error': '' }
+      />
       photo_nav_class = "active";
     }
     else {

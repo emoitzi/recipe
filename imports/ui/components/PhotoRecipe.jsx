@@ -11,8 +11,8 @@ export default class PhotoRecipe extends Component {
   render()  {
     return (
       <div>
-        <div className="form-group">
-          <label htmlFor="recipeImage">Foto:</label>
+        <div className={ "form-group " + this.props.errorClass }>
+          <label className="control-label" htmlFor="recipeImage">Foto:</label>
           <input
             type="file"
             accept="image/*"
