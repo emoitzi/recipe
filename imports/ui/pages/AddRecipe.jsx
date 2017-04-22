@@ -5,12 +5,13 @@ import {browserHistory} from 'react-router';
 
 import RecipeForm from './RecipeForm';
 
+
 export default AddRecipe = createContainer(() => {
-  let errors = {};
-  function handleSubmit (recipe) {
-    errors = {};
+  function handleSubmit (recipe, callback) {
     Meteor.call('recipes.insert', recipe, (err, id) => {
+      let errors;
       if (err) {
+        errors = {};
         err.details.forEach((fieldError) => {
           errors[fieldError.name] = true;
         });
@@ -19,11 +20,11 @@ export default AddRecipe = createContainer(() => {
         //success
         browserHistory.push('/recipe/' + id);
       }
+      callback(errors)
     });
   }
   return {
     onSubmit: handleSubmit,
-    errors: errors,
     ready: true,
   };
 

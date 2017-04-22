@@ -9,7 +9,6 @@ import { Images } from '../../api/images.js';
 
 export default EditRecipe = createContainer((params) => {
   Meteor.subscribe("recipes");
-  let errors = {};
   const recipe = Recipes.findOne({_id: params.params.id});
   let titleImage;
   let recipeImage;
@@ -24,10 +23,11 @@ export default EditRecipe = createContainer((params) => {
     ready = true;
   }
 
-  function handleSubmit (recipe) {
-    errors = {};
+  function handleSubmit (recipe, callback) {
+    let errors;
     Meteor.call('recipes.update', recipe._id, recipe, (err) => {
       if (err) {
+        errors = {};
         err.details.forEach((fieldError) => {
           errors[fieldError.name] = true;
         });
@@ -36,6 +36,7 @@ export default EditRecipe = createContainer((params) => {
         //success
         browserHistory.push('/recipe/' + recipe._id);
       }
+      callback(errors);
     });
   }
   return {
@@ -43,7 +44,6 @@ export default EditRecipe = createContainer((params) => {
     titlePreviewSrc: titleImage && titleImage.link(),
     recipePreviewSrc: recipeImage && recipeImage.link(),
     onSubmit: handleSubmit,
-    errors: errors,
     ready: ready,
     title: "Rezept ändern",
   };

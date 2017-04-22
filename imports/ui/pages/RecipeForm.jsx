@@ -28,7 +28,7 @@ export default class RecipeForm extends Component {
       recipePreviewSrc: props.recipePreviewSrc || '',
       titlePreviewSrc: props.titlePreviewSrc || '',
       uploadingImage: 0,
-      errors: props.errors,
+      errors: {},
     };
   }
 
@@ -37,7 +37,7 @@ export default class RecipeForm extends Component {
       recipe : props.recipe || this.state.recipe,
       recipePreviewSrc: props.recipePreviewSrc || '',
       titlePreviewSrc: props.titlePreviewSrc || '',
-      errors: props.errors,
+
     };
     this.setState(state);
   }
@@ -98,7 +98,12 @@ export default class RecipeForm extends Component {
 
   handleSubmit (event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.recipe);
+    let self = this;
+    this.props.onSubmit(this.state.recipe, (err) => {
+      if (err) {
+        self.setState({"errors": err});
+      }
+    });
 
   }
   handleImageChange(file, resolution, idStateKey, srcStateKey) {
@@ -311,7 +316,6 @@ export default class RecipeForm extends Component {
 
 RecipeForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.object,
   recipe: PropTypes.object,
   recipePreviewSrc: PropTypes.string,
   titlePreviewSrc: PropTypes.string,
