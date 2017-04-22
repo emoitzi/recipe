@@ -9,8 +9,8 @@ import CategoryContainer from '../components/Category';
 import TextRecipe from '../components/TextRecipe';
 import PhotoRecipe from '../components/PhotoRecipe';
 
-import { Recipes, resolutions } from '../../api/recipes.js';
-import { Images } from '../../api/images.js';
+import { Recipes  } from '../../api/recipes.js';
+import { Images, resolutions } from '../../api/images.js';
 
 export default class RecipeForm extends Component {
   constructor(props) {
