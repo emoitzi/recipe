@@ -65,3 +65,13 @@ ul.grid,
 }
 
 body { padding-top: 50px; }
+
+
+@media (min-width: 768px) {
+  .navbar-fixed-top .navbar-collapse,
+  .navbar-static-top .navbar-collapse,
+  .navbar-fixed-bottom .navbar-collapse {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

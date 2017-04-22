@@ -31,6 +31,7 @@ export default class RecipeForm extends Component {
       errors: props.errors,
     };
   }
+
   componentWillReceiveProps( props) {
     let state = {
       recipe : props.recipe || this.state.recipe,
@@ -217,7 +218,7 @@ export default class RecipeForm extends Component {
 
     return (
       <div className="container">
-        <h1>Rezept hinzufügen</h1>
+        <h1> { this.props.title }</h1>
         <form className="new-recipe"
           onSubmit={this.handleSubmit.bind(this)}>
           <div className="row">
@@ -315,5 +316,9 @@ RecipeForm.propTypes = {
   recipePreviewSrc: PropTypes.string,
   titlePreviewSrc: PropTypes.string,
   ready: PropTypes.bool,
+  title: PropTypes.string,
+};
 
-}
+RecipeForm.defaultProps = {
+  title: "Rezept hinzufügen",
+};

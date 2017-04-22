@@ -45,6 +45,7 @@ export default EditRecipe = createContainer((params) => {
     onSubmit: handleSubmit,
     errors: errors,
     ready: ready,
+    title: "Rezept ändern",
   };
 
 }, RecipeForm);
