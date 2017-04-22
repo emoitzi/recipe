@@ -247,7 +247,7 @@ export default class RecipeForm extends Component {
 
             </div>
             <div className="col-xs-12 col-md-6">
-              <div className="form-horizontal">
+              <div className="form-horizontal row">
                 <div className={ "form-group " + (this.hasError('title') ? 'has-error' :'') }>
                   <label className="col-sm-2 control-label" htmlFor="title">Titel: </label>
                   <div className=" col-sm-10">

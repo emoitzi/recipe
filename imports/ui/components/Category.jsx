@@ -36,16 +36,18 @@ export class Category extends Component {
   }
   render() {
     return (
-      <div className={ "form-horizontal category "  + (this.props.errorClass)}>
-        <label className="col-sm-2 control-label"> Kategorie </label>
-        <div className="col-sm-10 form-group btn-group" role="group">
-          { this.renderCategories()}
-        </div>
-        <input
-          type="hidden"
-          value={this.state.value }
-          name= { this.props.name}
+      <div className={ "form-horizontal category row "  + (this.props.errorClass)}>
+        <div className="form-group">
+          <label className="col-sm-2 control-label"> Kategorie </label>
+          <div className="col-sm-10 btn-group" role="group">
+            { this.renderCategories()}
+          </div>
+          <input
+            type="hidden"
+            value={this.state.value }
+            name= { this.props.name}
           />
+        </div>
       </div>
     )
   }
