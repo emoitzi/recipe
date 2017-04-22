@@ -2,11 +2,24 @@ import React, {Component } from 'react';
 
 export default class EditIngredients extends Component {
   constructor(props) {
-    props.ingredients = props.ingredients || {};
     super(props);
-
+    this.getErrorClass = this.getErrorClass.bind(this);
+    let ingredients = this.props.ingredients;
+    if (!ingredients[0] || Object.keys(ingredients[0]) !== 3) {
+      ingredients[0] = {
+        "amount": '',
+        "unit": '',
+        "ingredient": '',
+      }
+    }
+    this.state = {
+      "ingredients": this.props.ingredients,
+    }
   }
 
+  willReceiveProps(props) {
+    this.setState({"ingredients": props.ingredients});
+  }
   addButton(e) {
     e.preventDefault();
     let ingredient = this.props.ingredients;
@@ -15,7 +28,7 @@ export default class EditIngredients extends Component {
   }
 
   handleAmountChange(index, e){
-    let ingredient = this.props.ingredients;
+    let ingredient = this.state.ingredients;
     ingredient[index]['amount'] = e.target.value;
     this.props.onChange(ingredient)
   }
@@ -35,30 +48,34 @@ export default class EditIngredients extends Component {
     ingredient.splice(index, 1);
     this.props.onChange(ingredient);
   }
+  getErrorClass(index, name) {
+    const key = 'ingredients.' + index + '.' + name;
+    return key in this.props.errors ? ' has-error': '';
+  }
   renderLine(index) {
     return (
       <div className="ingredients row">
-        <div className="form-group col-xs-3 padding-left">
+        <div className= { "form-group col-xs-3 padding-left" + this.getErrorClass(index, 'amount') }>
             <input
               type="text"
               className="form-control"
-              value={this.props.ingredients[index].amount }
+              value={this.state.ingredients[index].amount }
               onChange={this.handleAmountChange.bind(this, index)}
               />
         </div>
-        <div className="form-group col-xs-3">
+        <div className={ "form-group col-xs-3" + this.getErrorClass(index, 'unit') }>
             <input
               type="text"
               className="form-control"
-              value={this.props.ingredients[index].unit }
+              value={this.state.ingredients[index].unit }
               onChange={this.handleUnitChange.bind(this, index)}
               />
         </div>
-        <div className="form-group col-xs-5">
+        <div className={ "form-group col-xs-5"  + this.getErrorClass(index, 'ingredient') }>
             <input
               type="text"
               className="form-control"
-              value={this.props.ingredients[index].ingredient }
+              value={this.state.ingredients[index].ingredient }
               onChange={this.handleIngredientChange.bind(this, index)}
               />
         </div>
@@ -116,4 +133,8 @@ export default class EditIngredients extends Component {
       </div>
     )
   }
+}
+
+EditIngredients.defaultProps = {
+  "ingredients": [{}],
 }

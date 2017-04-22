@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import EditIngredients  from './EditIngredients';
 
 export default class TextRecipe extends Component {
-  constructor(props) {
-    super(props)
-    this.props.errorClass = props.errorClass || '';
-  }
-
   ingredientsChange(value) {
     this.props.onChange('ingredients', value);
   }
@@ -18,8 +13,10 @@ export default class TextRecipe extends Component {
     return (
       <div>
         <EditIngredients ingredients={this.props.recipe.ingredients}
-          onChange={this.ingredientsChange.bind(this)}/>
-        <div className={ "form-group "  + this.props.errorClass }>
+          onChange={this.ingredientsChange.bind(this)}
+          errors={this.props.errors}/>
+
+        <div className={ "form-group"  + ("preparation" in this.props.errors ? " has-error": "" )}>
           <label className="control-label" htmlFor="preparation">Zubereitung:</label>
           <textarea
             className="form-control"
@@ -33,4 +30,8 @@ export default class TextRecipe extends Component {
       </div>
     )
   }
+}
+
+TextRecipe.defaultProps = {
+  "errors": {}
 }

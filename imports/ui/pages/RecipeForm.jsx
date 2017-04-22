@@ -35,8 +35,8 @@ export default class RecipeForm extends Component {
   componentWillReceiveProps( props) {
     let state = {
       recipe : props.recipe || this.state.recipe,
-      recipePreviewSrc: props.recipePreviewSrc || '',
-      titlePreviewSrc: props.titlePreviewSrc || '',
+      recipePreviewSrc: props.recipePreviewSrc || self.state.recipePreviewSrc || '',
+      titlePreviewSrc: props.titlePreviewSrc || self.state.titlePreviewSrc || '',
 
     };
     this.setState(state);
@@ -46,6 +46,15 @@ export default class RecipeForm extends Component {
     event.preventDefault();
     browserHistory.push('/')
   }
+
+  removeError(prevState, key) {
+    let errors = prevState.errors;
+    if (key in errors) {
+      delete errors[key];
+    }
+    return errors;
+  }
+
   handleTextRecipeClick (event) {
     this.setState((prevState, props) => {
       let prevRecipe = prevState.recipe;
@@ -61,24 +70,30 @@ export default class RecipeForm extends Component {
     });
   }
   handleTextRecipeChange(key, value) {
+    let self = this;
     this.setState((prevState, props) => {
       let prevRecipe = prevState.recipe;
       prevRecipe[key] = value;
-      return { recipe: prevRecipe };
+      return {
+        recipe: prevRecipe,
+        errors: value ? self.removeError(prevState, key): prevState.errors,
+       };
     });
   }
 
   handleChange (event) {
+    let self = this;
     let target = $(event.target);
     let name = target.attr('name');
-//    let new_state = {};
-//    new_state[name] = target.val();
     this.setState((prevState, props) => {
       let prevRecipe = prevState.recipe;
-      prevRecipe[name] = target.val();
-      return { recipe: prevRecipe};
+      let value = target.val();
+      prevRecipe[name] = value;
+      return {
+         recipe: prevRecipe,
+         errors: value ? self.removeError(prevState, name) : prevState.errors,
+       };
     });
-      //{recipe: new_state});
   }
   handleStatusChange (event) {
     let value = event.target.checked;
@@ -89,10 +104,14 @@ export default class RecipeForm extends Component {
     });
   }
   handleCategoryChange (value) {
+    let self=this;
     this.setState((prevState, props) => {
       let prevRecipe = prevState.recipe;
       prevRecipe.category = value;
-      return { recipe: prevRecipe };
+      return {
+         recipe: prevRecipe,
+         errors: value ? self.removeError(prevState, 'category') : prevState.errors,
+       };
     });
   }
 
@@ -151,8 +170,10 @@ export default class RecipeForm extends Component {
             let prevRecipe = prevState.recipe;
             prevRecipe[idStateKey] = fileObj._id;
 
+            let errors = self.removeError(prevState, idStateKey);
             return {
               recipe: prevRecipe,
+              errors: errors,
             };
           });
         }
@@ -217,7 +238,7 @@ export default class RecipeForm extends Component {
       center = <TextRecipe
         onChange={ this.handleTextRecipeChange.bind(this)}
         recipe={ this.state.recipe}
-        errorClass={ this.hasError('preparation') ? 'has-error': ''}
+        errors={ this.state.errors}
         />
       text_nav_class = "active";
     }
