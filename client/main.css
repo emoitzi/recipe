@@ -68,6 +68,7 @@ ul.grid,
 ul.grid {
   padding-left: 5px;
   padding-right: 5px;
+  z-index: 200;
 }
 
 @media only screen {
@@ -108,6 +109,12 @@ ul.grid {
     padding-left: 15px;
     padding-right: 15px;
   }
+}
+
+#add-button {
+  position: fixed;
+  top: 75px;
+  z-index: 500;
 }
 
 @media print {
