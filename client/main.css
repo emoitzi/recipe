@@ -79,3 +79,15 @@ body { padding-top: 50px; }
     padding-right: 15px;
   }
 }
+
+@media print {
+  button, a {
+    display: none !important;
+  }
+  body {
+    padding-top: 0;
+  }
+  img {
+    width: 150px;
+  }
+}
