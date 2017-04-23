@@ -28,6 +28,10 @@
   .container {
     width: 100%;
   }
+  .ingredients h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 
 @media (min-width: 992px) {

@@ -12,6 +12,16 @@ class Recipe extends Component {
   backHandler (event) {
     event.preventDefault();
     browserHistory.push('/')
+    this.getSavePreparationHtml = this.getSavePreparationHtml.bind(this);
+  }
+  getSavePreparationHtml() {
+    let preparation = this.props.recipe.preparation.replace(/</g, "&lt");
+    preparation = preparation.replace(/>/g, "&gt");
+    preparation = preparation.replace(/\n/g, "<br>");
+    return {
+      __html: preparation,
+    }
+
   }
   render() {
     if (!this.props.recipe || !this.props.author) {
@@ -33,12 +43,11 @@ class Recipe extends Component {
           <div className="col-xs-12 col-md-6">
             <img src={ (this.props.titleImage && this.props.titleImage.link()) || defaultTitleImageUrl()} className="img-responsive center-block" />
           </div>
-          { !this.props.recipe.isPhotoRecipe &&
-            <div className="col-xs-12 col-md-6">
-              <h2>Zubereitung</h2>
-              <pre>
-              { this.props.recipe.preparation}
-              </pre>
+          {
+            !this.props.recipe.isPhotoRecipe &&
+            <div className="ingredients col-xs-12 col-md-6">
+              <h2>Zutaten</h2>
+              <Ingredients ingredients={ this.props.recipe.ingredients }/>
             </div>
           }
           {
@@ -49,11 +58,11 @@ class Recipe extends Component {
             </div>
           }
         </div>
-        {
-          !this.props.recipe.isPhotoRecipe &&
+        { !this.props.recipe.isPhotoRecipe &&
           <div>
-            <h2>Zutaten</h2>
-            <Ingredients ingredients={ this.props.recipe.ingredients }/>
+            <h2>Zubereitung</h2>
+            <p dangerouslySetInnerHTML={this.getSavePreparationHtml()}>
+            </p>
           </div>
         }
         <button className="btn btn-default pull-left" onClick={this.backHandler.bind(this)}>
