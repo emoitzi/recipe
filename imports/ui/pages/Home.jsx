@@ -21,7 +21,7 @@ import RecipeListItem from '../components/RecipeListItems';
       <div>
         <h1>Rezepte</h1>
         <IndexLink to="/recipe/add">Rezept hinzufügen</IndexLink>
-        <ul className="grid row">
+        <ul className="grid row recipe-grid">
           { this.renderRecipes() }
         </ul>
       </div>

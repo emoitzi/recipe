@@ -65,10 +65,40 @@ ul.grid,
   list-style: none;
 }
 
-.grid li {
+ul.grid {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-body { padding-top: 50px; }
+@media only screen {
+  body {
+    padding-top: 50px;
+    background: #f6f6f6
+  }
+
+}
+
+.recipe-grid li {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.recipe-grid a {
+  border-radius: 0;
+  color: black;
+  border: 0;
+  margin-bottom: 10px;
+}
+.recipe-grid a:hover,
+.recipe-grid a:active {
+  background-color: #f3f3f3;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3)
+}
+.recipe-grid img:hover,
+.recipe-grid img:active {
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
 
 
 @media (min-width: 768px) {
