@@ -35,8 +35,8 @@ export default class RecipeForm extends Component {
   componentWillReceiveProps( props) {
     let state = {
       recipe : props.recipe || this.state.recipe,
-      recipePreviewSrc: props.recipePreviewSrc || self.state.recipePreviewSrc || '',
-      titlePreviewSrc: props.titlePreviewSrc || self.state.titlePreviewSrc || '',
+      recipePreviewSrc: props.recipePreviewSrc || this.state.recipePreviewSrc || '',
+      titlePreviewSrc: props.titlePreviewSrc || this.state.titlePreviewSrc || '',
 
     };
     this.setState(state);
