@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import EditIngredients  from './EditIngredients';
 
 export default class TextRecipe extends Component {
-  ingredientsChange(value) {
-    this.props.onChange('ingredients', value);
+  ingredientsChange(value, errorKey) {
+    this.props.onChange('ingredients', value, errorKey);
   }
   handleChange(event) {
     this.props.onChange('preparation' ,event.target.value);

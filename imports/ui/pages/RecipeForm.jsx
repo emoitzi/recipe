@@ -69,14 +69,14 @@ export default class RecipeForm extends Component {
       return { recipe: prevRecipe};
     });
   }
-  handleTextRecipeChange(key, value) {
+  handleTextRecipeChange(key, value, errorKey) {
     let self = this;
     this.setState((prevState, props) => {
       let prevRecipe = prevState.recipe;
       prevRecipe[key] = value;
       return {
         recipe: prevRecipe,
-        errors: value ? self.removeError(prevState, key): prevState.errors,
+        errors: value ? self.removeError(prevState, errorKey || key): prevState.errors,
        };
     });
   }

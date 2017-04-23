@@ -29,18 +29,31 @@ export default class EditIngredients extends Component {
 
   handleAmountChange(index, e){
     let ingredient = this.state.ingredients;
-    ingredient[index]['amount'] = e.target.value;
-    this.props.onChange(ingredient)
+    let amount = e.target.value;
+    ingredient[index]['amount'] = amount;
+    let errorKey;
+    if (!/[^0-9]/.test(amount)) {
+      errorKey = "ingredients." + index + ".amount";
+    }
+    this.props.onChange(ingredient, errorKey);
   }
   handleUnitChange(index,  e) {
     let ingredient = this.props.ingredients;
     ingredient[index]['unit'] = e.target.value;
-    this.props.onChange(ingredient)
+    let errorKey;
+    if (e.target.value) {
+      errorKey = "ingredients." + index + ".unit";
+    }
+    this.props.onChange(ingredient, errorKey);
   }
   handleIngredientChange(index, e){
     let ingredient = this.props.ingredients;
     ingredient[index]['ingredient'] = e.target.value;
-    this.props.onChange(ingredient)
+    let errorKey;
+    if (e.target.value) {
+      errorKey = "ingredients." + index + ".ingredient";
+    }
+    this.props.onChange(ingredient, errorKey);
   }
   handleRemove (index, e) {
     e.preventDefault();
@@ -58,7 +71,10 @@ export default class EditIngredients extends Component {
         <div className= { "form-group col-xs-3 padding-left" + this.getErrorClass(index, 'amount') }>
             <input
               type="text"
+              pattern="[0-9]+"
+              inputMode="numeric"
               className="form-control"
+              title="nur Zahlen"
               value={this.state.ingredients[index].amount }
               onChange={this.handleAmountChange.bind(this, index)}
               />
