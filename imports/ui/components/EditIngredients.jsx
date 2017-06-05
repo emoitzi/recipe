@@ -30,11 +30,14 @@ export default class EditIngredients extends Component {
   handleAmountChange(index, e){
     let ingredient = this.state.ingredients;
     let amount = e.target.value;
-    ingredient[index]['amount'] = amount;
     let errorKey;
-    if (!/[^0-9]/.test(amount)) {
+
+    amount = amount.replace(',', '.');
+    //Allow empty value, but must be valid float
+    if (!amount || /[0-9]+[,.]{1}[0-9]*/.test(amount)) {
       errorKey = "ingredients." + index + ".amount";
     }
+    ingredient[index]['amount'] = amount;
     this.props.onChange(ingredient, errorKey);
   }
   handleUnitChange(index,  e) {
@@ -71,7 +74,7 @@ export default class EditIngredients extends Component {
         <div className= { "form-group col-xs-3 padding-left" + this.getErrorClass(index, 'amount') }>
             <input
               type="text"
-              pattern="[0-9]+"
+              pattern="[0-9]+[,.]{1}[0-9]*"
               inputMode="numeric"
               className="form-control"
               title="nur Zahlen"

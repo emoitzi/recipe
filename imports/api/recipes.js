@@ -8,9 +8,12 @@ export const Recipes = new Mongo.Collection('recipes');
 IngredientSchema = new SimpleSchema({
   amount: {
     type: Number,
+    decimal: true,
+    optional: true
   },
   unit: {
     type: String,
+    optional: true,
   },
   ingredient: {
     type: String,
