@@ -5,7 +5,7 @@ export default class EditIngredients extends Component {
     super(props);
     this.getErrorClass = this.getErrorClass.bind(this);
     let ingredients = this.props.ingredients;
-    if (!ingredients[0] || Object.keys(ingredients[0]) !== 3) {
+    if (!ingredients[0] || Object.keys(ingredients[0]).length !== 3) {
       ingredients[0] = {
         "amount": '',
         "unit": '',
