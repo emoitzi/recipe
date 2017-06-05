@@ -4,8 +4,8 @@ import { IndexLink } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { Recipes } from '../../api/recipes.js'
-import RecipeListItem from '../components/RecipeListItems';
+import { Categories } from '../../api/categories.js'
+import RecipeListGroup from '../components/RecipeListGroup';
 
  class Home extends Component {
    constructor(props) {
@@ -13,10 +13,12 @@ import RecipeListItem from '../components/RecipeListItems';
      this.positionAddButton = this.positionAddButton.bind(this);
    }
 
-   renderRecipes() {
-     return this.props.recipes.map((recipe) => {
+   renderCategories() {
+     return this.props.categories.map((category) => {
        return (
-         <RecipeListItem key={ recipe._id } recipe={recipe} image_id={recipe.titleImage} />
+        <RecipeListGroup key={ category._id }
+                          category_id={category._id}
+                          category_name={ category.name} />
        )
      });
    }
@@ -26,9 +28,9 @@ import RecipeListItem from '../components/RecipeListItems';
       <div>
         <h1>Rezepte</h1>
         <IndexLink id="add-button" className="btn btn-success" to="/recipe/add">Rezept hinzufügen</IndexLink>
-        <ul id="grid" className="grid row recipe-grid">
-          { this.renderRecipes() }
-        </ul>
+          <div id="grid">
+            { this.renderCategories() }
+          </div>
       </div>
 
     )
@@ -55,8 +57,8 @@ import RecipeListItem from '../components/RecipeListItems';
 }
 
 export default createContainer ( () => {
-  Meteor.subscribe('recipes');
+  Meteor.subscribe("categories");
   return {
-    recipes: Recipes.find({}).fetch(),
+    categories: Categories.find({}).fetch()
   }
 }, Home);
