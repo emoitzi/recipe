@@ -75,7 +75,7 @@ export default class EditIngredients extends Component {
             <input
               type="text"
               pattern="[0-9]+[,.]{1}[0-9]*"
-              inputMode="numeric"
+              inputMode="decimal"
               className="form-control"
               title="nur Zahlen"
               value={this.state.ingredients[index].amount }
