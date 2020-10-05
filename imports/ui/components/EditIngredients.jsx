@@ -74,7 +74,7 @@ export default class EditIngredients extends Component {
         <div className= { "form-group col-xs-3 padding-left" + this.getErrorClass(index, 'amount') }>
             <input
               type="text"
-              pattern="[0-9]+[,.]{1}[0-9]*"
+              pattern="[0-9]+[,.]{0,1}[0-9]*"
               inputMode="decimal"
               className="form-control"
               title="nur Zahlen"
