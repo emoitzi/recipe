@@ -4,13 +4,12 @@ app:
     - "3000:3000"
   volumes:
     - /var/www/html/recipe/images:/data
+    - /var/log/meteor:/var/log/meteor
+    - ./run.env:/etc/service/meteor/run.env
   links:
     - mongo
-  environment:
-    - ROOT_URL=https://rezepte.ewald-moitzi.at
-    - MONGO_URL=mongodb://mongo:27017/meteor
   restart: always
-mongo:
+mongodb:
   image: mongo:latest
   volumes:
     - /var/recipe/mongo:/data/db
