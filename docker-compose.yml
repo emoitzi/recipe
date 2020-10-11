@@ -7,7 +7,7 @@ app:
     - /var/log/meteor:/var/log/meteor
     - ./run.env:/etc/service/meteor/run.env
   links:
-    - mongo
+    - mongodb
   restart: always
 mongodb:
   image: mongo:latest
