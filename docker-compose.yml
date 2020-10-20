@@ -12,6 +12,6 @@ app:
 mongodb:
   image: tozd/meteor-mongodb:3.4
   volumes:
-    - /var/recipe/mongo:/data/db
-    - ./run.config:/etc/service/meteor/run.config
+    - /var/recipe/mongo:/var/lib/mongodb
+    - ./run.config:/etc/service/mongod/run.config
   restart: always
