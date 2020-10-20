@@ -10,7 +10,8 @@ app:
     - mongodb
   restart: always
 mongodb:
-  image: mongo:latest
+  image: tozd/meteor-mongodb:3.4
   volumes:
     - /var/recipe/mongo:/data/db
+    - ./run.config:/etc/service/meteor/run.config
   restart: always
