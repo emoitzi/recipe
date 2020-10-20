@@ -5,7 +5,7 @@ app:
   volumes:
     - /var/www/html/recipe/images:/data
     - /var/log/meteor:/var/log/meteor
-    - ./run.env:/etc/service/meteor/run.env
+    - ./run.config:/etc/service/meteor/run.config
   links:
     - mongodb
   restart: always

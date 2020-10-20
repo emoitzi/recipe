@@ -1,4 +1,4 @@
-FROM tozd/meteor:ubuntu-xenial-1.4.4.2
-#RUN node /opt/meteor/dist/bundle/programs/server/node_modules/fibers/build
+FROM tozd/meteor:ubuntu-xenial-1.11.1
+
 RUN mkdir /data
 RUN chown meteor:meteor /data
